@@ -1,0 +1,65 @@
+dotnet COMMAND LINE NOTES
+=========================
+
+
+dotnet --list-sdks
+
+3.1.110 [C:\Program Files\dotnet\sdk]
+3.1.404 [C:\Program Files\dotnet\sdk]
+5.0.101 [C:\Program Files\dotnet\sdk]
+
+dotnet new globaljson --sdk-version 3.1.110 --output MySolution/MyProject
+dotnet new web --no-https --output MySolution/MyProject --framework netcoreapp3.1
+dotnet new sln -o MySolution
+dotnet sln MySolution add MySolution/MyProject
+
+Notes on the above:
+Top level folder MySolution is used to group multiple projects together
+global.json helps to get expected result, ensures everyone using project is using same version
+--no-https argument creates project without HTTPS support (later will use it)
+--framework netcoreapp3.1 selects the .NET Core runtime the project will be used
+sln commands create a solution file that reference the new project, and allows multiple files/projects to be opened together
+
+Managing Packages
+dotnet add package Microsoft.EntityFrameWorkCore.SqlServer --version 3.1.1
+dotnet remove package Microsoft.EntityFrameWorkCore.SqlServer
+dotnet list package
+
+
+Managing Tool Packages (dotnet tool)
+Tool package --> installs commands that can be used from command line to perform operations on .NET Core Projects
+e.g. Entity FrameWork Core tools package used to manage databases in ASP.NET Core projects
+
+dotnet tool uninstall --global dotnet-ef
+dotnet tool install --global dotnet-ef --version 3.1.1
+
+
+Managing Client-Side Packages (dotnet tool)
+Client-side package --> contains content that's delivered to client eg images, css, js, static html
+They're added using the Library Manager tool (LibMan)
+
+dotnet tool uninstall --global Microsoft.Web.LibraryManager.Cli
+dotnet tool install --global Microsoft.Web.LibraryManager.Cli --version 2.0.96
+
+Initialise the project (creates file LibMan uses to track installed client packages)
+libman init -p cdnjs		(produces libman.json file in MyProject, the -p specifies the repository is at https://cdnjs.com which is the most widely used repo)
+
+Now, client packages can be installed eg install Bootstrap CSS framework:
+
+dotnet tests
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
