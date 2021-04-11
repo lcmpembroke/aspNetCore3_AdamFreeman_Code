@@ -1,6 +1,51 @@
 ﻿@page
+@using System.Collections.Generic
 @model SportsStore.Pages.CartModel
 @{
 }
 
-<h4>THIS IS THE CART PAGE</h4>
+<h2>Your cart</h2>
+
+@if (Model.Cart.Lines == null || Model.Cart.Lines.Count == 0)
+{
+    <div class="text-center">
+        <p>Your cart is currently empty</p>
+    </div>
+}
+else
+{
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th class="text-center">Quantity</th>
+                <th class="text-left">Item</th>
+                <th class="text-right">Prices</th>
+                <th class="text-right">Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model.Cart.Lines)
+            {
+                <tr>
+                    <td class="text-center">@item.Quantity</td>
+                    <td class="text-left">@item.Product.Name</td>
+                    <td class="text-right">@item.Product.Price</td>
+                    <td class="text-right">@((item.Quantity * item.Product.Price).ToString("c"))</td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3" class="text-right">Total:</td>
+                <td class="text-right">@Model.Cart.ComputeTotalValue().ToString("c")</td>
+            </tr>
+        </tfoot>
+    </table>
+}
+
+
+
+<div class="text-center">
+    <a class="btn btn-dark" href="@Model.ReturnUrl">Continue shopping</a>
+</div>

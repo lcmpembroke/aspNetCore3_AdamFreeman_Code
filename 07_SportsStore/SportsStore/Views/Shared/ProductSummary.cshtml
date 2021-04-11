@@ -9,6 +9,13 @@
             </span>
         </h4>
     </div>
+    @*
+        Model Binding: handler methods in Cart.cshtml.cs receive the POST data from here. i.e. in class CartModel : PageModel  (defined in Cart.cshtml.cs) you have method:
+                public IActionResult OnPost(long productId, string returnUrl) { ... }
+
+        The OnPost() method uses parameter names that match the input elements so ASP.NET Core does MODEL BINDING so developer doesn't need to process the form directly...
+        i.e. Adding to Cart is processed by Razor Pages (not MVC) as it's self-contained feature that doesn't require the complexity of the MVC framework...used complementary to MVC
+    *@
     <form id="@Model.ProductID" asp-page="/Cart" method="post">
         <input type="hidden" asp-for="ProductID" />
         <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQuery()" />
