@@ -11,6 +11,9 @@
     <div class="text-center">
         <p>Your cart is currently empty</p>
     </div>
+    <div class="text-center">
+        <a class="btn btn-dark" href="@Model.ReturnUrl">Continue shopping</a>
+    </div>
 }
 else
 {
@@ -21,17 +24,25 @@ else
                 <th class="text-left">Item</th>
                 <th class="text-right">Prices</th>
                 <th class="text-right">Subtotal</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
 
-            @foreach (var item in Model.Cart.Lines)
+            @foreach (var line in Model.Cart.Lines)
             {
                 <tr>
-                    <td class="text-center">@item.Quantity</td>
-                    <td class="text-left">@item.Product.Name</td>
-                    <td class="text-right">@item.Product.Price</td>
-                    <td class="text-right">@((item.Quantity * item.Product.Price).ToString("c"))</td>
+                    <td class="text-center">@line.Quantity</td>
+                    <td class="text-left">@line.Product.Name</td>
+                    <td class="text-right">@line.Product.Price</td>
+                    <td class="text-right">@((line.Quantity * line.Product.Price).ToString("c"))</td>
+                    <td>
+                        <form asp-page-handler="Remove" method="post">
+                            <input type="hidden" name="ProductID" value="@line.Product.ProductID" />
+                            <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
+                            <button class="btn btn-dark btn-sm" type="submit">Remove</button>
+                        </form>
+                    </td>
                 </tr>
             }
         </tbody>
@@ -42,10 +53,12 @@ else
             </tr>
         </tfoot>
     </table>
+    <div class="text-center">
+        <a class="btn btn-dark" href="@Model.ReturnUrl">Continue shopping</a>
+        <a class="btn btn-dark" asp-action="Checkout" asp-controller="Order">Checkout</a>
+    </div>
 }
 
 
 
-<div class="text-center">
-    <a class="btn btn-dark" href="@Model.ReturnUrl">Continue shopping</a>
-</div>
+

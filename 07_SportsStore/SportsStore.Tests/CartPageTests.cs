@@ -44,28 +44,10 @@ namespace SportsStore.Tests
             mockHttpContext.Setup(c => c.Session).Returns(mockSession.Object);
 
             // act
-            // USEFUL NOTES for the following;
-            //--------------------------------
-            // PageContext Class = The context associated with the current request for a Razor page.
-            //      (Namespace: Microsoft.AspNetCore.Mvc.RazorPages)
-            //
-            // ActionContext Class = Context object for execution of action which has been selected as part of an HTTP request.
-            //      (Namespace: Microsoft.AspNetCore.Mvc)
-            //      Properties:
-            //      ActionDescriptor - Gets or sets the ActionDescriptor for the selected action.
-            //      HttpContext - Gets or sets the HttpContext for the current request.
-            //      ModelState - Gets the ModelStateDictionary.
-            //      RouteData - Gets or sets the RouteData for the current request.
+            // NB: Cart is now provided as a constructor argument (not accessed through the Context objects
+            //  as had to do before "CartService was implemented
 
-            CartModel cartPageModel = new CartModel(mockRepo.Object)
-            { 
-                PageContext = new PageContext(new ActionContext 
-                                            { 
-                                                HttpContext = mockHttpContext.Object, 
-                                                RouteData = new RouteData(), 
-                                                ActionDescriptor = new PageActionDescriptor() 
-                                            } )
-            };
+            CartModel cartPageModel = new CartModel(mockRepo.Object, testCart);
             cartPageModel.OnGet("myUrl");
 
             // assert
@@ -88,33 +70,9 @@ namespace SportsStore.Tests
 
             // create a cart
             Cart testCart = new Cart();
-            testCart.AddItem(p1, 2);
-            testCart.AddItem(p2, 1);
 
-            //
-            //create an HttpSession as neededin the OnPost() method
-            Mock<ISession> mockSession = new Mock<ISession>();
-            mockSession.Setup(s => s.Set(It.IsAny<string>(), It.IsAny<byte[]>()))
-                .Callback<string, byte[]>((key,val) => 
-                {
-                    testCart = JsonSerializer.Deserialize<Cart>(Encoding.UTF8.GetString(val));
-                });
-
-            // create an HttpContext and set it's session to the mockSession just created about
-            Mock<HttpContext> mockHttpContext = new Mock<HttpContext>();
-            mockHttpContext.SetupGet(c => c.Session).Returns(mockSession.Object);
-
-            // create the Model for the CartPage and associate the mockHttpContext (that has the mock Session ) with it
-            CartModel cartModel = new CartModel(mockRepo.Object)
-            {
-                PageContext = new PageContext(new ActionContext 
-                                                { 
-                                                    HttpContext = mockHttpContext.Object, 
-                                                    RouteData = new RouteData(), 
-                                                    ActionDescriptor = new PageActionDescriptor() 
-                                                })
-            };
-
+            // create the Model for the CartPage
+            CartModel cartModel = new CartModel(mockRepo.Object, testCart);
 
             // act
             cartModel.OnPost(p1.ProductID, "myUrl");
