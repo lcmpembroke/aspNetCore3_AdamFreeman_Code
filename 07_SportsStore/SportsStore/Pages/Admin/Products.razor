@@ -1,0 +1,102 @@
+﻿@page "/admin/products"
+@page "/admin"
+@inherits OwningComponentBase<IStoreRepository>
+
+@if (!String.IsNullOrWhiteSpace(ErrorMessage))
+{
+    <div class="alert-danger">
+        <p>@ErrorMessage</p>
+    </div>
+}
+
+<table class="table table-sm table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (ProductData?.Count() > 0)
+        {
+            foreach (Product p in ProductData)
+            {
+                <tr>
+                    <td>@p.ProductID</td>
+                    <td>@p.Name</td>
+                    <td>@p.Category</td>
+                    <td>@p.Price.ToString("c")</td>
+                    <td>
+                        <NavLink class="btn btn-info btn-sm" href="@GetDetailsUrl(p.ProductID)">Details</NavLink>
+                        <NavLink class="btn btn-warning btn-sm" href="@GetEditUrl(p.ProductID)">Edit</NavLink>
+                        <button class="btn btn-danger btn-sm" @onclick="@(e => DeleteProduct(p))">Delete</button>
+                        @*<Confirm @ref="_confirm" ResultChanged="ResultChanged">
+                            <button class="btn btn-danger btn-sm" @onclick="DeleteConfirm()">Delete</button>
+                        </Confirm>*@
+                    </td>
+                </tr>
+
+            }
+        }
+        else
+        {
+            <tr><td colspan="5">No Products</td></tr>
+        }
+    </tbody>
+</table>
+
+<NavLink class="btn btn-dark" href="admin/products/create">Create</NavLink>
+
+@code
+{
+    public IStoreRepository Repository => Service;
+
+    public IEnumerable<Product> ProductData { get; set; }
+
+    public string ErrorMessage;
+
+    protected async override Task OnInitializedAsync()
+    {
+        await UpdateData();
+    }
+
+    public async Task UpdateData()
+    {
+        ProductData = await Repository.Products.ToListAsync();
+    }
+
+    public string GetDetailsUrl(long id) => $"/admin/products/details/{id}";
+    public string GetEditUrl(long id) => $"/admin/products/edit/{id}";
+    public async Task DeleteProduct(Product p)
+    {
+        try
+        {
+            Repository.DeleteProduct(p);
+            await UpdateData();
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"The delete failed for {p.Name}: " + ex.InnerException.Message;
+        }
+
+    }
+
+
+    //// code added for confirm dialogue before delete!
+    //private Confirm _confirm;
+
+    //private void DeleteConfirm() => _confirm.Display($"Sure you want to delete?");
+
+    //private void ResultChanged(bool yes)
+    //{
+    //    if (yes)
+    //    {
+    //        DeleteProduct();
+    //    }
+    //}
+
+
+}
