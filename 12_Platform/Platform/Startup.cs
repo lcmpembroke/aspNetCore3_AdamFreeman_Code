@@ -17,9 +17,6 @@ namespace Platform
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<MessageOptions>(options => {
-                options.CityName = "Leeds";
-            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -30,58 +27,29 @@ namespace Platform
                 app.UseDeveloperExceptionPage();
             }
 
-            // BOOK page 277-278
-            app.UseMiddleware<LocationMiddleware>();
-
-
-            // modifying the HTTPResponse AFTER the next() function has been called
-            app.Use(async (context, next) => {
-                await next();
-                await context.Response.WriteAsync($"\nStatus code: {context.Response.StatusCode} \n");
-            });
-
-            // short circuiting the request pipeline...
-            app.Use(async (context, next) => {
-
-                if (context.Request.Path == "/short")
-                {
-                    await context.Response.WriteAsync($"\nRequest was short circuited \n");
-                }
-                else
-                {
-                    await next();
-                }
-            });
-
-
-            // adding custom middleware to the application before the next() function has been called
-            app.Use(async (context, next) => {
-                if (context.Request.Method == HttpMethods.Get && context.Request.Query["custom"] == "true")
-                {
-                    await context.Response.WriteAsync("Custom middleware applied from Startup class directly \n");
-                }
-                await next();
-            });
-
-            app.Map("/branch", branch => {
-                branch.UseMiddleware<Middleware>();
-                branch.Use(async (context, next) => {
-                    await context.Response.WriteAsync("Branch middleware based on given request path... ");
-                });
-            });
-
-            // adding user-defined class-based middleware to the application
-            app.UseMiddleware<Middleware>();
+            //app.UseMiddleware<Population>();
+            //app.UseMiddleware<Capital>();
 
             app.UseRouting();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapGet("/", async context =>
+            app.UseEndpoints(endpoints => {
+                endpoints.MapGet("routing", async context => { await context.Response.WriteAsync("Request was Routed"); });
+                endpoints.MapGet("capital/uk", new Capital().Invoke);
+                endpoints.MapGet("population/paris", new Population().Invoke);
+                endpoints.MapGet("{first}/{second}/{third}", async context => 
                 {
-                    await context.Response.WriteAsync("Hello World!");
+                    await context.Response.WriteAsync("\nRequest was Routed\n");
+                    foreach (var item in context.Request.RouteValues)
+                    {
+                        await context.Response.WriteAsync($"{item.Key}, {item.Value}\n");
+                    }
                 });
             });
+
+            app.Use(async (context, next) => {
+                await context.Response.WriteAsync("Terminal Middleware Reached");
+            });
+
         }
     }
 }
