@@ -4,13 +4,13 @@ using System.Threading.Tasks;
 
 namespace Platform.Services
 {
-    public class GuidService : IResponseFormatter
+    public class GuidService : IGuidResponseService
     {
         private Guid guid = Guid.NewGuid();
 
-        public async Task Format(HttpContext context, string content)
+        public async Task FormatGuid(HttpContext context, string content)
         {
-            await context.Response.WriteAsync($"Guid: {guid}\n{content}");
+            await context.Response.WriteAsync($"\nGuid: {guid}\n{content}\n\n");
         }
 
     }
