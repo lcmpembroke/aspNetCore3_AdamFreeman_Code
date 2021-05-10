@@ -35,15 +35,15 @@ namespace Platform
         }
 
 
-        public async Task Invoke(HttpContext context, IResponseFormatter formatter, IGuidResponseService formatter2, IGuidResponseService formatter3)
+        public async Task Invoke(HttpContext context, IResponseFormatter formatter, IResponseFormatter formatter2, IResponseFormatter formatter3)
         {
             if (context.Request.Path == "/middleware/class")
             {
                 //await context.Response.WriteAsync("WeatherMiddleware middleware class; it's raining in London");
                 //await formatter.Format(context, "WeatherMiddleware middleware class USING formatter SERVICE through injected in WeatherMiddleware.Invoke() method; it's raining in London");
                 await formatter.Format(context, "WeatherMiddleware middleware class with IResponseFormatter now... - 1");
-                await formatter2.FormatGuid(context, "WeatherMiddleware middleware class - 2");
-                await formatter3.FormatGuid(context, "WeatherMiddleware middleware class - 3");
+                await formatter2.Format(context, "WeatherMiddleware middleware class - 2");
+                await formatter3.Format(context, "WeatherMiddleware middleware class - 3");
             }
             else
             {

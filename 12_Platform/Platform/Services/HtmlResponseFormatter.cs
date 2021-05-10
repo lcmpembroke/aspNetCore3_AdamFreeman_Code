@@ -23,5 +23,8 @@ namespace Platform.Services
 
             );
         }
+
+        public bool RichOutput => true;
+
     }
 }
