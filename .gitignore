@@ -265,3 +265,4 @@ __pycache__/
 *.pyc
 
 07*
+12_Platform/ServiceTestApp/wwwroot/*
