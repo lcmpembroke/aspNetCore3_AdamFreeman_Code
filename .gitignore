@@ -266,3 +266,4 @@ __pycache__/
 
 07*
 12_Platform/ServiceTestApp/wwwroot/*
+15_Platform/wwwroot/lib/*

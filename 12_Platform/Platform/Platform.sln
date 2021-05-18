@@ -5,7 +5,7 @@ VisualStudioVersion = 16.6.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Platform", "Platform.csproj", "{7870EA0D-157B-475D-81F4-082AF04545C9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiscMVCWebApp", "..\MiscMVCWebApp\MiscMVCWebApp.csproj", "{932D2993-FAC2-46C5-BF0C-B2674533E9D9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceTestApp", "..\MiscMVCWebApp\ServiceTestApp.csproj", "{932D2993-FAC2-46C5-BF0C-B2674533E9D9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
