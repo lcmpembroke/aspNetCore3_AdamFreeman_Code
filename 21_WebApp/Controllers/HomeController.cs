@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using WebApp.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.Controllers
 {
@@ -14,15 +15,8 @@ namespace WebApp.Controllers
         }
         public async Task<IActionResult> Index(long id = 1)
         {
-            Product p = await context.Products.FindAsync(id);
-            if (p.CategoryId == 1)
-            {
-                return View("Watersports", p);
-            }
-            else
-            {
-                return View(p);
-            }
+            ViewBag.AveragePrice = await context.Products.AverageAsync(p => p.Price);
+            return View(await context.Products.FindAsync(id));
         }
 
         public IActionResult List()
@@ -30,9 +24,10 @@ namespace WebApp.Controllers
             return View(context.Products);
         }
 
-        public IActionResult Common()
+        public IActionResult Html()
         {
-            return View();
+            return View((object)"This is a <h3><i>string</i></h3>");
         }
+
     }
 }

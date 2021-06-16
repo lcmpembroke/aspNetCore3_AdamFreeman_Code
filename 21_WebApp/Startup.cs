@@ -27,6 +27,9 @@ namespace WebApp
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation();  // P498
 
+            services.AddDistributedMemoryCache();
+            services.AddSession(opts => opts.Cookie.IsEssential = true);
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -38,6 +41,7 @@ namespace WebApp
             }
 
             app.UseStaticFiles();
+            app.UseSession();
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
