@@ -1,0 +1,7 @@
+﻿@page "{id:long?}"
+@model IndexModel
+
+
+<div>This is from the Pages/Index.cshtml file</div>
+<div class="bg-dark text-white text-center m-2 p-2">@Model.Product.Name</div>
+<partial name="_ProductPartial" model="Model.Product" />

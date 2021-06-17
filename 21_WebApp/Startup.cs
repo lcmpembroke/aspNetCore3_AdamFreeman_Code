@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,9 +27,14 @@ namespace WebApp
             });
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation();  // P498
+            services.AddRazorPages().AddRazorRuntimeCompilation(); // p560
 
             services.AddDistributedMemoryCache();
             services.AddSession(opts => opts.Cookie.IsEssential = true);
+
+            services.Configure<RazorPagesOptions>(opts => {
+                opts.Conventions.AddPageRoute("/Index","/extra/page/{id:long?}");
+            });
 
         }
 
@@ -48,6 +54,7 @@ namespace WebApp
             {
                 endpoints.MapControllers();     // defines routes that will allow controllers to handle requests
                 endpoints.MapDefaultControllerRoute(); // sets up convention based routing
+                endpoints.MapRazorPages();
             });
 
             SeedData.SeedDatabase(dataContext);

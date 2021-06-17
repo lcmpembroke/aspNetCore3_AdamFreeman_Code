@@ -1,0 +1,11 @@
+﻿@page
+@inject DataContext context;
+
+<div class="bg-primary text-white text-center m-2 p-2">Categories from Data.cshtml</div>
+<ul class="list-group m-2">
+    @foreach (Category c in context.Categories)
+    {
+        <li class="list-group-item">@c.Name</li>
+    }
+</ul>
+
