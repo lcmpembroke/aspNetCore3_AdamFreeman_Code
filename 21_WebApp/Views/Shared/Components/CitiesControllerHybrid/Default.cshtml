@@ -1,0 +1,15 @@
+﻿@model CityViewModel
+
+    <h6 class="text-white">Hybrid Controller Summary</h6>
+    <table class="table table-sm table-bordered text-white bg-dark">
+        <tbody>
+            <tr>
+                <td>Cities:</td>
+                <td class="text-right">@Model.Cities</td>
+            </tr>
+            <tr>
+                <td>Population:</td>
+                <td class="text-right">@Model.Population.ToString("#,###")</td>
+            </tr>
+        </tbody>
+    </table>

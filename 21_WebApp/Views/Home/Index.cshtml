@@ -8,9 +8,7 @@
     ViewBag.Title = ViewBag.Title ?? "Product Table";
 }
 
-@section Header {
-    Product Information
-}
+@section Header {    Product Information  }
 
 <tr><th>Name</th><td>@Model.Name</td></tr>
 <tr><th>Price</th><td>@Model.Price.ToString("c") </td></tr>
@@ -22,6 +20,9 @@
 
 @section Summary {
     <div class="bg-info text-white m-2 p-2">
-        @Json.Serialize(Model)
+        @*@Json.Serialize(Model)*@ 
+        @*@await Component.InvokeAsync("CitySummary")*@
+        <vc:city-summary theme-name="secondary" />
+        <vc:page-size />
     </div>
 }

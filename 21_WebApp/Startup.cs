@@ -26,15 +26,16 @@ namespace WebApp
                 options.EnableSensitiveDataLogging(true);
             });
 
-            services.AddControllersWithViews().AddRazorRuntimeCompilation();  // P498
-            services.AddRazorPages().AddRazorRuntimeCompilation(); // p560
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();    // P498
+            services.AddRazorPages().AddRazorRuntimeCompilation();              // p560
 
-            services.AddDistributedMemoryCache();
-            services.AddSession(opts => opts.Cookie.IsEssential = true);
+            services.AddDistributedMemoryCache();                               // p528 required for TempData in CubedController and view
+            services.AddSession(opts => opts.Cookie.IsEssential = true);        // p528
 
             services.Configure<RazorPagesOptions>(opts => {
                 opts.Conventions.AddPageRoute("/Index","/extra/page/{id:long?}");
             });
+            services.AddSingleton<CitiesData>();                                // p587
 
         }
 
