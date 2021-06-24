@@ -1,0 +1,18 @@
+﻿@page
+@model WebApp.Pages.CitiesModel
+
+
+<div class="m-2">
+    <table class="table table-sm table-striped table-bordered">
+        <tbody>
+            @foreach (City city in Model.Data.Cities)
+            {
+                <tr>
+                    <td>@city.Name</td>
+                    <td>@city.Country</td>
+                    <td>@city.Population</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

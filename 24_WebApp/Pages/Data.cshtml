@@ -1,0 +1,24 @@
+﻿@page
+@inject DataContext context;
+
+<div class="bg-primary text-white text-center m-2 p-2">Categories from Data.cshtml</div>
+<ul class="list-group m-2">
+    @foreach (Category c in context.Categories)
+    {
+        <li class="list-group-item">@c.Name</li>
+    }
+</ul>
+
+<div class="bg-info text-white m-2 p-2">
+    <vc:city-summary theme-name="info" />
+</div>
+
+<div class="bg-info text-white m-2 p-2">
+    <vc:cities-page-hybrid />
+</div>
+
+<div class="bg-info text-white m-2 p-2">
+    <vc:cities-controller-hybrid />
+</div>
+
+

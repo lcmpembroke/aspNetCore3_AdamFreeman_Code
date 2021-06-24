@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="~/lib/twitter-bootstrap/css/bootstrap.min.css" />
+</head>
+<body>
+    <h6 class="bg-primary text-white text-center m-2 p-2">Cubed</h6>
+
+    <form action="/cubed/cube" method="get" class="m-2">
+        <div class="form-group">
+            <label for="num">Value</label>
+            <input name="num" class="form-control" value="@(TempData["value"])" />
+        </div>
+        <button class="btn btn-primary" type="submit">Submit</button>
+    </form>
+    @if (TempData["result"] != null)
+    {
+        <div class="bg-info text-white m-2 p-2">
+            The cube of @TempData["value"] is @TempData["result"]
+        </div>
+    }
+</body>
+</html>
