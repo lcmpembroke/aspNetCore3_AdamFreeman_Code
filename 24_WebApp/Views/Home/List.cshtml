@@ -1,7 +1,6 @@
 ﻿@model IEnumerable<Product>
-@{ 
-    Layout = null;
-    decimal average = Model.Average(p => p.Price);
+@{
+    Layout = "_SimpleLayout";
 }
 
 <!DOCTYPE html>
@@ -14,16 +13,25 @@
     <div class="m-2">
         <table class="table table-sm table-striped table-bordered">
             <thead>
-                <tr><th>Name</th><td>Price</td></tr>
+                <tr>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Category</th>
+                    <th>Supplier</th>
+                    <th></th>
+                </tr>
             </thead>
             <tbody>
                 @foreach (Product p in Model)
                 {
-                    <partial name="_RowPartial" model="p" />    
+                    <partial name="_RowPartial" model="p" />
                 }
-
             </tbody>
-            </table>
+        </table>
+        <a asp-page="/suppliers/list" class="btn btn-secondary">Suppliers</a>
+        <div>This is Path: @Path</div>
+        <div>This is Url.Action(Path): @Url.Action(Html.Encode(Path))</div>
+        <div>This is Url.Page("/suppliers/list"): @Url.Page("/suppliers/list")</div>
     </div>
 </body>
 </html>

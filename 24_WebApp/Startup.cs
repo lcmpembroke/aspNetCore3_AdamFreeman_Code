@@ -29,8 +29,8 @@ namespace WebApp
             services.AddControllersWithViews().AddRazorRuntimeCompilation();    // P498
             services.AddRazorPages().AddRazorRuntimeCompilation();              // p560
             services.AddSingleton<CitiesData>();                                // p587
-            services.AddTransient<ITagHelperComponent, TimeTagHelperComponent>();   // p640
-            services.AddTransient<ITagHelperComponent, TableFooterTagHelperComponent>();   // p642
+            //services.AddTransient<ITagHelperComponent, TimeTagHelperComponent>();   // p640 (commented out for chapter 26)
+            //services.AddTransient<ITagHelperComponent, TableFooterTagHelperComponent>();   // p642(commented out for chapter 26)
 
         }
 

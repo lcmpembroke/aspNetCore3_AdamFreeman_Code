@@ -10,7 +10,7 @@
 <div show-when-gt="500" for="Price">
     @* page 637 - related code in SelectiveTagHelper.cs *@
     <h5 class="bg-danger text-white text-center p-2">Warning: Expensive item!</h5>
-</div> 
+</div>
 
 <table class="table table-sm table-striped table-bordered">
     <tablehead bg-color="dark">Product Summary</tablehead>
@@ -20,16 +20,15 @@
                 <th colspan="2">Product Summary</th>
             </tr>
         </thead>*@
-<tbody>
-    <tr theme="primary"><th>Name</th><td highlight="true">@Model.Name</td></tr>
-    <tr theme="secondary"><th>Price</th><td bg-color="dark">@Model.Price.ToString("c") </td></tr>
-    <tr theme="info"><th>Category id</th><td>@Model.CategoryId</td></tr>
-    <tr><td colspan="2">...  </td></tr>
-    @* Tag helpers aren't applied to elements generatedby other tag helpers, therefore cannot add theme attribute to the below rows: (see page 636) *@
-    <tr><td colspan="2">Below demonstrating use of ModelRowTagHelper:</td></tr>
-    <tr for="Name" />
-    <tr for="Price" format="c" />
-    <tr for="CategoryId" />
-
-</tbody>
+    <tbody>
+        <tr theme="primary"><th>Name</th><td highlight="true">@Model.Name</td></tr>
+        <tr theme="secondary"><th>Price</th><td bg-color="dark">@Model.Price.ToString("c") </td></tr>
+        <tr theme="info"><th>Category id</th><td>@Model.CategoryId</td></tr>
+        <tr><td colspan="2">...  </td></tr>
+        @* Tag helpers aren't applied to elements generatedby other tag helpers, therefore cannot add theme attribute to the below rows: (see page 636) *@
+        <tr><td colspan="2">Below demonstrating use of ModelRowTagHelper:</td></tr>
+        <tr for="Name" />
+        <tr for="Price" format="c" />
+        <tr for="CategoryId" />
+    </tbody>
 </table>
