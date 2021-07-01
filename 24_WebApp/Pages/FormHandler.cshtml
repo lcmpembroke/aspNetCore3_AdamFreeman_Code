@@ -1,0 +1,89 @@
+﻿@page "/pages/form/{id:long?}"
+@model FormHandlerModel
+@using Microsoft.AspNetCore.Mvc.RazorPages
+@using Microsoft.EntityFrameworkCore
+@using Microsoft.AspNetCore.Mvc.ModelBinding;
+
+<div class="m-2">
+
+    <h5 class="bg-primary text-white text-center p-2">HTML Form from Razor Page</h5>
+
+    <partial name="_Validation" />
+
+    <form asp-page="FormHandler" method="post" id="htmlform">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="form-group">
+            <label>Name</label>
+            <div><span asp-validation-for="Product.Name" class="text-danger"></span></div>
+            <input class="form-control" asp-for="Product.Name" />
+        </div>
+        <div class="form-group">
+            <label>Price</label>
+            <div><span asp-validation-for="Product.Price" class="text-danger"></span></div>
+            <input class="form-control" asp-for="Product.Price" />
+        </div>
+        <div class="form-group">
+            <label>Category Id</label>
+            <div><span asp-validation-for="Product.CategoryId" class="text-danger"></span></div>
+            <input class="form-control" asp-for="Product.CategoryId" />
+        </div>
+        <div class="form-group">
+            <label>Supplier Id</label>
+            <div><span asp-validation-for="Product.SupplierId" class="text-danger"></span></div>
+            <input class="form-control" asp-for="Product.SupplierId" />
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+<button type="submit" form="htmlform" asp-page="FormHandler" class="btn btn-primary m-2">Submit (button outside form)</button>
+
+@functions
+{
+    // NOTE antiforgery tolen is enabled by default for Razor pages (have to explicitly add it to MVC Controllers) p697 & 699
+    public class FormHandlerModel : PageModel
+    {
+        private DataContext context;
+        public FormHandlerModel(DataContext dbContext)
+        {
+            context = dbContext;
+        }
+
+        [BindProperty] // p714 - for POST requests only by default see p715 so OnPost() doesn't need to declare parameter to bind to
+        public Product Product { get; set; }
+
+        //[BindProperty(Name = "Product.Category")] // 718  (commented out on p755)
+        //public Category Category { get; set; }
+
+        public async Task OnGetAsync(long? id)
+        {
+            //Product = await context.Products.FindAsync(id);
+            Product = await context.Products.FirstOrDefaultAsync(p => p.ProductId == id);  //.Include(p => p.Category).Include(p => p.Supplier).FirstAsync(p => p.ProductId == id);  // p687
+        }
+
+        public IActionResult OnPost()
+        {
+            // p756 had model validation coded in controller - not good
+            // Removed in p764 to allow Custom validation to be applied to Model and its Properties - see classes defined in Validation folder, then applied to Product.cs
+
+            if (ModelState.IsValid)
+            {
+                TempData["name"] = Product.Name;
+                TempData["price"] = Product.Price.ToString();
+                TempData["categoryId"] = Product.CategoryId.ToString();
+                TempData["supplierId"] = Product.SupplierId.ToString();
+                return RedirectToPage("FormResults");
+            }
+            else
+            {
+                return Page();
+            }
+
+
+
+
+
+
+
+        }
+    }
+}
