@@ -1,0 +1,42 @@
+﻿@page "/pages/create"
+@model CreateModel
+
+<div class="m-2">
+
+    <partial name="_ProductEditor" model="@Model.ViewModel" />
+</div>
+
+@functions {
+
+    public class CreateModel : EditorPageModel
+    {
+        public CreateModel(DataContext dataContext) : base(dataContext) { }
+
+        public void OnGet()
+        {
+            Product p = TempData.ContainsKey("product") 
+                        ? JsonSerializer.Deserialize<Product>(TempData["product"] as string) 
+                        : new Product();
+            ViewModel = ProductViewModelFactory.Create(p, Categories, Suppliers);
+        }
+
+
+        public async Task<IActionResult> OnPostAsync([FromForm]Product product)
+        {
+            await CheckNewCategory(product);
+            if (ModelState.IsValid)
+            {
+                product.ProductId = default;    // allows database server to assign Primary Key value
+                product.Category = default;     // prevents having to deal with relational data pages 826,838
+                product.Supplier = default;     // prevents having to deal with relational data pages 826,838
+                DataContext.Products.Add(product);
+                await DataContext.SaveChangesAsync();
+                return RedirectToPage(nameof(Index));
+            }
+            // set the product to the values the form had on them i.e. remembers any (invalid as that's why here!) user input
+            ViewModel = ProductViewModelFactory.Create(product, Categories, Suppliers);
+            return Page();
+        }
+    }
+
+}

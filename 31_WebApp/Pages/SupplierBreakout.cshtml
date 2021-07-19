@@ -1,0 +1,73 @@
+﻿@page "/pages/supplier"
+@model SupplierBreakoutPageModel
+@using Microsoft.AspNetCore.Http;
+
+<partial name="_Validation" />
+
+<div class="m-2">
+    <h5 class="bg-secondary text-white text-center p-2">New Supplier</h5>
+    <form asp-page="SupplierBreakout" method="post">
+        <div class="form-group">
+            <label asp-for="Supplier.Name"></label>
+            <div><span asp-validation-for="Supplier.Name" class="text-danger"></span></div>
+            <input class="form-control" asp-for="Supplier.Name" />
+        </div>
+        <div class="form-group">
+            <label asp-for="Supplier.City"></label>
+            <div><span asp-validation-for="Supplier.City" class="text-danger"></span></div>
+            <input class="form-control" asp-for="Supplier.City" />
+        </div>
+
+        <button class="btn btn-secondary" type="submit">Submit Create Supplier</button>
+        <a class="btn btn-secondary" asp-page="@Model.ReturnPage" asp-route-id="@Model.ProductId">Cancel</a>
+    </form>
+
+</div>
+
+@functions {
+
+    public class SupplierBreakoutPageModel : PageModel
+    {
+        private DataContext context;
+
+        public SupplierBreakoutPageModel(DataContext dataContext)
+        {
+            context = dataContext;
+        }
+
+        [BindProperty]
+        public Supplier Supplier { get; set; }
+        public string ReturnPage { get; set; }
+        public string ProductId { get; set; }
+
+        // note this page is navigated to from user adding a product - so details of product the user has provided will be in the querystring
+        public void OnGet([FromQuery(Name = "Product")] Product product, string returnPage)
+        {
+            // keep track of Product...
+            TempData["product"] = JsonSerializer.Serialize(product);    // product object converted to JSON
+            TempData["returnAction"] = ReturnPage = returnPage;
+            TempData["productId"] = ProductId = product.ProductId.ToString(); //?? what if not yet assigned breaking out from Create?
+        }
+
+        public async Task<IActionResult> OnPost()
+        {
+            if (ModelState.IsValid)
+            {
+                context.Suppliers.Add(Supplier);    // Supplier populated by model binding
+                await context.SaveChangesAsync();
+
+                // add the new SupplierId to the Product object:
+                Product product = JsonSerializer.Deserialize<Product>(TempData["product"] as string); // JSON back to product object
+                product.SupplierId = Supplier.SupplierId;
+
+                TempData["product"] = JsonSerializer.Serialize(product);    // product object converted to JSON (now with SupplierId added)
+                string productId = TempData["productId"] as string;
+
+                return RedirectToPage(TempData["returnAction"] as string, new { id = productId });
+            }
+            return Page();
+
+        }
+    }
+
+}
