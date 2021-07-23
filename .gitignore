@@ -278,4 +278,5 @@ __pycache__/
 31_WebApp/wwwroot/lib/*
 31_WebApp/wwwroot/images/*
 32_Advanced/wwwroot/lib/*
+33_BlazorServer/wwwroot/lib/*
 

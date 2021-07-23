@@ -1,0 +1,30 @@
+﻿@page "/pages/blazor"
+
+
+<h4 class="text-center text-white bg-primary p-2">class only razor component</h4>
+<component type="typeof(Advanced.Blazor.CodeOnlyComponent)" render-mode="Server" />
+
+@*<h4 class="text-center text-white bg-primary p-2">code behind</h4>
+<component type="typeof(Advanced.Blazor.Split)" render-mode="Server" />*@
+
+@*<h4 class="text-center text-white bg-primary p-2">Data bindings</h4>
+    <component type="typeof(Advanced.Blazor.Bindings)" render-mode="Server" />*@
+
+
+@*<h4 class="text-center text-white bg-primary p-2">Events</h4>
+    <component type="typeof(Advanced.Blazor.Events)" render-mode="Server" />*@
+
+@*<script type="text/javascript">
+        window.addEventListener("DOMContentLoaded", () => {
+            document.getElementById("markElements").addEventListener("click", () => {
+                document.querySelectorAll("td:first-child").forEach(elem => {
+                    elem.innerText = `M:${elem.innerText}`
+                    elem.classList.add("border", "border-dark");
+                });
+            });
+        });
+    </script>
+
+    <h4 class="text-center text-white bg-primary p-2">Blazor People</h4>
+    <button id="markElements" class="btn btn-outline-primary mb-2">Mark Elements</button>
+    <component type="typeof(Advanced.Blazor.PeopleList)" render-mode="Server" />*@
